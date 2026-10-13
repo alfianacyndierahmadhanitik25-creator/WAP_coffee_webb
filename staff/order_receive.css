@@ -1,0 +1,527 @@
+/* =====================================================
+   ORDER RECEIVE — tambahan di atas menu.css
+   (sidebar, topbar, .menu-columns, .order-card, .filter-btn,
+    .search-box, .status-badge, .empty-state dll. dari menu.css)
+====================================================== */
+
+:root {
+    --pending-bg: #fff0d7;
+    --pending-fg: #a56a12;
+    --pending-line: #e0a33a;
+    --process-bg: #eee5fb;
+    --process-fg: #7853a6;
+    --process-line: #9a76c9;
+}
+
+
+/* ==============================
+   STATUS TAMBAHAN
+================================ */
+
+.status-pending {
+    background: var(--pending-bg);
+    color: var(--pending-fg);
+}
+
+.status-processing {
+    background: var(--process-bg);
+    color: var(--process-fg);
+}
+
+.status-cancelled {
+    background: #eee9e4;
+    color: #7d6f64;
+}
+
+
+/* ==============================
+   RINGKASAN
+================================ */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+}
+
+.summary-card {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 18px;
+    background: var(--card);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px #4a2a1a08;
+}
+
+.summary-icon {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #f5eee7;
+    color: var(--brown);
+    font-size: 20px;
+}
+
+.summary-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.summary-number {
+    display: block;
+    font-size: 23px;
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+
+/* ==============================
+   TOOLBAR
+================================ */
+
+.filter-btn .chip-count {
+    margin-left: 4px;
+    padding: 1px 7px;
+    border-radius: 20px;
+    background: #f5eee7;
+    color: var(--brown);
+    font-size: 10px;
+}
+
+.filter-btn.active .chip-count,
+.filter-btn:hover .chip-count {
+    background: rgba(255, 255, 255, .22);
+    color: #fff;
+}
+
+.scope-toggle {
+    display: inline-flex;
+    overflow: hidden;
+    border: 1px solid #dfd0c2;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.scope-btn {
+    padding: 10px 14px;
+    border: none;
+    background: none;
+    color: var(--brown);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.scope-btn.active {
+    background: var(--brown-dark);
+    color: #fff;
+}
+
+.live-status {
+    display: block;
+    margin: -6px 0 14px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+
+/* ==============================
+   KARTU PESANAN
+================================ */
+
+.ord-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 17px;
+}
+
+.ord-card {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px;
+    background: var(--card);
+    border: 2px solid transparent;
+    border-left: 5px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px #4a2a1a08;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+
+.ord-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px #4a2a1a14;
+}
+
+.ord-card:focus-visible {
+    outline: 2px solid var(--brown);
+    outline-offset: 2px;
+}
+
+.ord-card.selected {
+    border-color: var(--brown);
+    border-left-color: var(--brown);
+}
+
+.ord-card.status-pending    { border-left-color: var(--pending-line); }
+.ord-card.status-processing { border-left-color: var(--process-line); }
+.ord-card.status-completed  { border-left-color: var(--green); }
+.ord-card.status-cancelled  { border-left-color: #c9b8aa; }
+
+.ord-card.status-completed,
+.ord-card.status-cancelled {
+    background: #f8f4ef;
+}
+
+.ord-card.selected.status-pending,
+.ord-card.selected.status-processing,
+.ord-card.selected.status-completed,
+.ord-card.selected.status-cancelled {
+    border-left-color: var(--brown);
+}
+
+.ord-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.ord-number {
+    font-size: 15px;
+}
+
+.ord-who {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.ord-customer {
+    font-weight: 600;
+}
+
+.member-chip {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #e2f4e7;
+    color: #38804b;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.ord-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.type-badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 8px;
+    background: #f5eee7;
+    color: var(--brown);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.ord-time {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.ord-time.late {
+    color: var(--red);
+    font-weight: 700;
+}
+
+.ord-items {
+    flex: 1;
+    margin: 0;
+    padding: 10px 0 0;
+    list-style: none;
+    border-top: 1px dashed var(--line);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.ord-items .more {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.ord-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.ord-total {
+    font-size: 14px;
+}
+
+.ord-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 10px;
+    background: var(--brown);
+    color: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.ord-action:hover {
+    background: var(--brown-dark);
+}
+
+.ord-card.status-processing .ord-action {
+    background: #39834d;
+}
+
+.ord-card.status-processing .ord-action:hover {
+    background: #2e6a3f;
+}
+
+.ord-done {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* ==============================
+   PANEL DETAIL (kolom kanan)
+================================ */
+
+.detail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detail-close {
+    display: none;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    background: #f5eee7;
+    color: var(--brown);
+    cursor: pointer;
+}
+
+.detail-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+}
+
+.detail-body .order-items {
+    flex: none;
+    overflow: visible;
+}
+
+.detail-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.detail-number {
+    font-size: 17px;
+}
+
+.stepper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+}
+
+.step small {
+    font-size: 10px;
+}
+
+.step-dot {
+    position: relative;
+    z-index: 1;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #dfd0c2;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.step + .step::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 50%;
+    width: 100%;
+    height: 2px;
+    background: #dfd0c2;
+}
+
+.step.done .step-dot,
+.step.active .step-dot {
+    border-color: var(--brown);
+    background: var(--brown);
+}
+
+.step.done + .step::before,
+.step.active + .step::before {
+    background: #dfd0c2;
+}
+
+.step.done + .step::before {
+    background: var(--brown);
+}
+
+.step.active {
+    color: var(--text);
+    font-weight: 700;
+}
+
+.detail-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 0;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.detail-meta div {
+    min-width: 0;
+}
+
+.detail-meta dt {
+    margin-bottom: 3px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.detail-meta dd {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.order-item-sub {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+
+/* ==============================
+   TOAST
+================================ */
+
+.ord-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 2000;
+    max-width: 320px;
+    padding: 12px 18px;
+    border-radius: 12px;
+    background: var(--brown-dark);
+    color: #fff;
+    font-size: 13px;
+    box-shadow: 0 8px 24px #4a2a1a30;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.ord-toast.show {
+    opacity: 1;
+    transform: none;
+}
+
+.ord-toast.error {
+    background: var(--red);
+}
+
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1100px) {
+
+    /* Panel detail jadi layar penuh saat kartu diklik */
+    .ord-detail {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 1100;
+        max-height: none;
+        order: 0;
+        border-radius: 0;
+        overflow-y: auto;
+    }
+
+    .ord-detail.open {
+        display: flex;
+    }
+
+    .detail-close {
+        display: inline-flex;
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .scope-toggle,
+    .ingredient-btn {
+        flex-shrink: 0;
+    }
+
+    .ord-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

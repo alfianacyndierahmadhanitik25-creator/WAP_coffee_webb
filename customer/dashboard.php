@@ -235,6 +235,7 @@ try {
     <a href="menu.php">Menu</a>
     <a href="luma_moments.php">LŪMA Moments</a>
     <a href="dashboard.php#rewards">Rewards</a>
+    <a href="my_orders.php">My orders</a>
 </nav>
 
 
@@ -422,7 +423,7 @@ try {
                                     <?= e(rupiah($menu['display_price'])) ?>
                                 </span>
 
-                                <a class="text-link" href="../dashboard_main.php#menu">
+                                <a class="text-link" href="menu.php">
                                     View menu →
                                 </a>
 

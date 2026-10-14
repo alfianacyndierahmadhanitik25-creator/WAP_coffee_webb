@@ -143,7 +143,8 @@ if ($selectedId > 0 && !$selectedMoment) {
     <a href="menu.php">Menu</a>
     <a href="luma_moments.php">LŪMA Moments</a>
     <a href="dashboard.php#rewards">Rewards</a>
-</nav>
+    <a href="my_orders.php">My orders</a>
+        </nav>
 
         <div class="nav-actions">
             <span>Haloo, <?= e($name) ?></span>

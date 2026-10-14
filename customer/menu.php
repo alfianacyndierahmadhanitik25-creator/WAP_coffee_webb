@@ -155,6 +155,7 @@ $menus = $stmt->get_result();
     <a href="menu.php">Menu</a>
     <a href="luma_moments.php">LŪMA Moments</a>
     <a href="dashboard.php#rewards">Rewards</a>
+    <a href="my_orders.php">My orders</a>
 </nav>
 
     <a href="cart.php" class="menu-cart-link">

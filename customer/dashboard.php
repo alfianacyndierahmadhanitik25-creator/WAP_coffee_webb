@@ -232,7 +232,7 @@ try {
         <nav class="nav-links">
             <a href="../dashboard_main.php">Home</a>
             <a href="../dashboard_main.php#menu">Menu</a>
-            <a href="#moments">LŪMA Moments</a>
+            <a href="luma_moments.php">LŪMA Moments</a>
             <a href="#rewards">Rewards</a>
         </nav>
 
@@ -366,9 +366,12 @@ try {
                 <p>Pilihan yang bisa menemani harimu.</p>
             </div>
 
-            <a class="text-link" href="../dashboard_main.php#menu">
-                Explore all menu →
-            </a>
+            
+        <a class="text-link"
+        href="luma_moments.php?moment_id=<?= (int)$moment['moment_id'] ?>">
+         Discover →
+        </a>
+
         </div>
 
         <?php if ($menus): ?>

@@ -102,7 +102,19 @@ $error = '';
         </section>
 
         <section class="checkout-panel">
+                
+
             <h2>Payment Method</h2>
+
+            <!-- ORDER TYPE -->
+        <div class="form-group">
+            <label for="order_type">Order Type</label>
+
+            <select name="order_type" id="order_type" required>
+                <option value="Dine In">Dine In</option>
+                <option value="Take Away">Take Away</option>
+            </select>
+        </div>
 
             <form action="place_order.php" method="POST">
 
@@ -122,11 +134,13 @@ $error = '';
                         </option>
                     <?php endforeach; ?>
                 </select>
+        
 
                 <p class="checkout-note">
                     Your selected payment method will be recorded
                     with your order.
                 </p>
+                
 
                 <button
                     type="submit"

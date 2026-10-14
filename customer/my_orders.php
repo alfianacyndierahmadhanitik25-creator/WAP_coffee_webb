@@ -32,17 +32,17 @@ $error = '';
 |--------------------------------------------------------------------------
 */
 $sql = "
-    SELECT
-        order_id,
-        order_date,
-        total_amount,
-        status,
-        order_status,
-        order_type,
-        payment_method
-    FROM orders
-    WHERE user_id = ?
-    ORDER BY order_date DESC, order_id DESC
+   SELECT
+    order_id,
+    order_date,
+    total_amount,
+    status,
+    order_status,
+    order_type,
+    payment_method
+FROM orders
+WHERE user_id = ?
+ORDER BY order_date DESC, order_id DESC
 ";
 
 $stmt = $conn->prepare($sql);
@@ -221,7 +221,7 @@ function statusClass($status): string
            <?php foreach ($orders as $order): ?>
     <?php
         $orderId = (int) $order['order_id'];
-        $status = (string) $order['order_status'];
+        $status = (string) $order['status'];
         $details = $orderDetails[$orderId] ?? [];
     ?>
 
@@ -282,7 +282,10 @@ function statusClass($status): string
                             <span>Payment Method</span>
                             <strong><?= e($order['payment_method']) ?></strong>
                         </div>
-
+                    <div class="order-payment">
+                        <span>Order Type</span>
+                        <strong><?= e($order['order_type']) ?></strong>
+                    </div>
                         <div class="order-total">
                             <span>Total</span>
                             <strong>

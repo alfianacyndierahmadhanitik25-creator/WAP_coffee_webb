@@ -43,7 +43,7 @@ $total = 0;
         <div>
             <span class="eyebrow">YOUR SELECTION</span>
             <h2>Your Cart</h2>
-            <p>Periksa pilihanmu sebelum melanjutkan checkout.</p>
+            <p>Please check your orders before checkout.</p>
         </div>
     </div>
 
@@ -51,10 +51,10 @@ $total = 0;
 
         <div class="empty-state">
             <h3>Your cart is waiting.</h3>
-            <p>Belum ada menu di keranjangmu.</p>
+            <p>your cart is empty, please add some menu.</p>
 
-            <a href="luma_moments.php" class="text-link">
-                Discover your moment →
+            <a href="menu.php" class="text-link">
+                Let's start your journey →
             </a>
         </div>
 

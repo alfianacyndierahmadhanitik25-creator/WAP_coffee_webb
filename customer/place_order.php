@@ -20,6 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $userId = (int) $_SESSION['user_id'];
 $cart = $_SESSION['cart'] ?? [];
 $paymentMethod = $_POST['payment_method'] ?? '';
+$orderType = $_POST['order_type'] ?? '';
+
+$allowedOrderTypes = ['Dine In', 'Take Away'];
+
+if (!in_array($orderType, $allowedOrderTypes, true)) {
+    header('Location: checkout.php');
+    exit;
+}
 
 $allowedMethods = ['QRIS', 'Cash', 'Debit'];
 
@@ -75,39 +83,42 @@ try {
     | Simpan data utama pesanan
     |--------------------------------------------------------------------------
     */
-    $sqlOrder = "
-        INSERT INTO orders
-        (
-            user_id,
-            order_date,
-            total_amount,
-            status,
-            order_status,
-            order_type,
-            payment_method
-        )
-        VALUES (?, NOW(), ?, 'Success', 'Pending', 'Take Away', ?)
-    ";
+  
+$sqlOrder = "
+    INSERT INTO orders
+    (
+        user_id,
+        order_date,
+        total_amount,
+        status,
+        order_status,
+        order_type,
+        payment_method
+    )
+    VALUES (?, NOW(), ?, 'Success', 'Pending', ?, ?)
+";
 
-    $stmtOrder = $conn->prepare($sqlOrder);
+$stmtOrder = $conn->prepare($sqlOrder);
 
-    if (!$stmtOrder) {
-        throw new Exception('Gagal menyiapkan data pesanan.');
-    }
+if (!$stmtOrder) {
+    throw new Exception('Gagal menyiapkan data pesanan.');
+}
 
-    $stmtOrder->bind_param(
-        'ids',
-        $userId,
-        $totalAmount,
-        $paymentMethod
-    );
+$stmtOrder->bind_param(
+    'idss',
+    $userId,
+    $totalAmount,
+    $orderType,
+    $paymentMethod
+);
 
-    if (!$stmtOrder->execute()) {
-        throw new Exception('Gagal menyimpan pesanan.');
-    }
+if (!$stmtOrder->execute()) {
+    throw new Exception('Gagal menyimpan pesanan.');
+}
 
-    $orderId = (int) $conn->insert_id;
-    $stmtOrder->close();
+$orderId = (int) $conn->insert_id;
+$stmtOrder->close();
+
 
     /*
     |--------------------------------------------------------------------------

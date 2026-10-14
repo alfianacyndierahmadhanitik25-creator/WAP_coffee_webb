@@ -32,7 +32,7 @@ $error = '';
 $selectedId = filter_input(INPUT_GET, 'moment_id', FILTER_VALIDATE_INT);
 $selectedId = $selectedId ?: 0;
 
-/* 1. Ambil seluruh LŪMA Moments */
+/* Ambil empat LŪMA Moments */
 try {
     $result = $conn->query("
         SELECT moment_id, moment_name, icon
@@ -48,7 +48,7 @@ try {
     $error = 'LŪMA Moments belum dapat dimuat.';
 }
 
-/* 2. Ambil rekomendasi menu sesuai momen yang dipilih */
+/* Ambil rekomendasi menu sesuai momen */
 if ($selectedId > 0) {
     try {
         $stmt = $conn->prepare("
@@ -99,7 +99,7 @@ if ($selectedId > 0) {
     }
 }
 
-/* 3. Cari nama momen yang dipilih */
+/* Validasi momen yang dipilih */
 $selectedMoment = null;
 
 foreach ($moments as $moment) {
@@ -109,7 +109,6 @@ foreach ($moments as $moment) {
     }
 }
 
-/* Hindari menampilkan momen yang tidak valid */
 if ($selectedId > 0 && !$selectedMoment) {
     $selectedId = 0;
 }
@@ -125,12 +124,13 @@ if ($selectedId > 0 && !$selectedMoment) {
 
     <link
         rel="stylesheet"
-        href="./luma_moments.css?v=<?= filemtime(__DIR__ . '/luma_moments.css') ?>"
+        href="luma_moments.css?v=<?= filemtime(__DIR__ . '/luma_moments.css') ?>"
     >
 </head>
 
 <body>
 
+<!-- NAVBAR -->
 <header class="navbar">
     <div class="container nav-content">
 
@@ -139,12 +139,11 @@ if ($selectedId > 0 && !$selectedMoment) {
         </a>
 
         <nav class="nav-links">
-            <a href="../dashboard_main.php">Home</a>
-            <a href="../dashboard_main.php#menu">Menu</a>
-            <a href="dashboard.php">Dashboard</a>
-            <a href="luma_moments.php" class="active">LŪMA Moments</a>
-            <a href="dashboard.php#rewards">Rewards</a>
-        </nav>
+    <a href="dashboard.php">Home</a>
+    <a href="menu.php">Menu</a>
+    <a href="luma_moments.php">LŪMA Moments</a>
+    <a href="dashboard.php#rewards">Rewards</a>
+</nav>
 
         <div class="nav-actions">
             <span>Haloo, <?= e($name) ?></span>
@@ -176,24 +175,30 @@ if ($selectedId > 0 && !$selectedMoment) {
     </section>
 
     <?php if ($error !== ''): ?>
-        <div class="notice"><?= e($error) ?></div>
+        <div class="notice">
+            <?= e($error) ?>
+        </div>
     <?php endif; ?>
 
-    <!-- MOMENT SELECTION -->
+    <!-- PILIHAN MOMEN -->
     <section class="section" id="choose-moment">
 
         <div class="section-heading">
             <div>
                 <span class="eyebrow">MADE FOR YOUR MOOD</span>
                 <h2>What's Your Moment?</h2>
-                <p>Pilih momenmu dan temukan rekomendasi dari LŪMA.</p>
+                <p>
+                    Pilih momenmu dan temukan rekomendasi dari LŪMA.
+                </p>
             </div>
         </div>
 
-        <?php if ($moments): ?>
+        <?php if (!empty($moments)): ?>
+
             <div class="moments-grid">
 
                 <?php foreach ($moments as $moment): ?>
+
                     <?php
                     $isActive =
                         (int)$moment['moment_id'] === $selectedId;
@@ -203,34 +208,46 @@ if ($selectedId > 0 && !$selectedMoment) {
                         class="moment-card <?= $isActive ? 'selected' : '' ?>"
                         href="luma_moments.php?moment_id=<?= (int)$moment['moment_id'] ?>#recommendations"
                     >
+
                         <span class="moment-icon">
                             <?= e($moment['icon'] ?: '☕') ?>
                         </span>
 
                         <span class="moment-label">YOUR MOMENT</span>
 
-                        <h3><?= e($moment['moment_name']) ?></h3>
+                        <h3>
+                            <?= e($moment['moment_name']) ?>
+                        </h3>
 
                         <span class="moment-action">
                             <?= $isActive ? 'Selected ✓' : 'Discover →' ?>
                         </span>
+
                     </a>
 
                 <?php endforeach; ?>
 
             </div>
+
         <?php else: ?>
-            <p class="empty-state">
-                Belum ada momen yang tersedia.
-            </p>
+
+            <div class="empty-state">
+                <h3>Moments are coming soon.</h3>
+                <p>Belum ada momen yang tersedia.</p>
+            </div>
+
         <?php endif; ?>
 
     </section>
 
-    <!-- MENU RECOMMENDATIONS -->
-    <section class="section recommendations" id="recommendations">
+    <!-- REKOMENDASI MENU -->
+    <section
+        class="section recommendations"
+        id="recommendations"
+    >
 
         <div class="section-heading">
+
             <div>
                 <span class="eyebrow">CURATED FOR YOU</span>
 
@@ -253,93 +270,145 @@ if ($selectedId > 0 && !$selectedMoment) {
             </div>
 
             <?php if ($selectedMoment): ?>
-                <a href="luma_moments.php#choose-moment" class="text-link">
+                <a
+                    href="luma_moments.php#choose-moment"
+                    class="text-link"
+                >
                     Change moment ↑
                 </a>
             <?php endif; ?>
+
         </div>
 
-        <?php if ($selectedMoment && $menus): ?>
+        <?php if ($selectedMoment && !empty($menus)): ?>
 
             <div class="menu-grid">
 
                 <?php foreach ($menus as $menu): ?>
+
                     <?php
-                    $filename = basename((string)($menu['image'] ?? ''));
-                    $imagePath = __DIR__ . '/../assets/menu/' . $filename;
+                    $filename = basename(
+                        (string)($menu['image'] ?? '')
+                    );
+
+                    $imagePath =
+                        __DIR__ . '/../assets/menu/' . $filename;
+
+                    $isPastry =
+                        strtolower(trim(
+                            $menu['category_name'] ?? ''
+                        )) === 'pastry';
                     ?>
 
                     <article class="menu-card">
 
+                        <!-- FOTO MENU -->
                         <div class="menu-image">
+
                             <?php if (
                                 $filename !== '' &&
                                 is_file($imagePath)
                             ): ?>
+
                                 <img
                                     src="../assets/menu/<?= rawurlencode($filename) ?>"
                                     alt="<?= e($menu['menu_name']) ?>"
                                     loading="lazy"
                                 >
+
                             <?php else: ?>
+
                                 <div class="image-placeholder">
                                     LŪMA Café
                                 </div>
+
                             <?php endif; ?>
+
                         </div>
 
+                        <!-- INFORMASI MENU -->
                         <div class="menu-info">
+
                             <span class="category">
-                                <?= e($menu['category_name'] ?: 'LŪMA Selection') ?>
+                                <?= e(
+                                    $menu['category_name']
+                                    ?: 'LŪMA Selection'
+                                ) ?>
                             </span>
 
-                            <h3><?= e($menu['menu_name']) ?></h3>
+                            <h3>
+                                <?= e($menu['menu_name']) ?>
+                            </h3>
 
-                            
-<div class="menu-bottom">
-    <span class="price">
-        <?= e(rupiah($menu['display_price'])) ?>
-    </span>
-</div>
-
-<form action="add_to_cart.php" method="POST" class="add-cart-form">
-    <input type="hidden" name="menu_id"
-           value="<?= (int)$menu['menu_id'] ?>">
-
-    <?php if (strtolower(trim($menu['category_name'] ?? '')) === 'pastry'): ?>
-        <input type="hidden" name="size" value="regular">
-    <?php else: ?>
-        <label for="size-<?= (int)$menu['menu_id'] ?>">Size</label>
-        <select id="size-<?= (int)$menu['menu_id'] ?>"
-                name="size" required>
-            <option value="small">Small</option>
-            <option value="medium" selected>Medium</option>
-            <option value="large">Large</option>
-        </select>
-    <?php endif; ?>
-
-    <label for="qty-<?= (int)$menu['menu_id'] ?>">Quantity</label>
-    <input id="qty-<?= (int)$menu['menu_id'] ?>"
-           type="number" name="quantity"
-           value="1" min="1" max="50" required>
-
-   
-
-    <form action="add_to_cart.php"
-      method="POST"
-      class="add-cart-form">
-
-    <!-- Input menu_id, size, dan quantity milikmu tetap di sini -->
-
-    <button type="submit" class="add-cart-button">
-        Add to Cart +
-    
-</form>
-
-</button>
-</form>
+                            <div class="menu-bottom">
+                                <span class="price">
+                                    <?= e(rupiah($menu['display_price'])) ?>
+                                </span>
+                            </div>
 
                         </div>
+
+                        <!-- ADD TO CART: SATU FORM -->
+                        <form
+                            action="add_to_cart.php"
+                            method="POST"
+                            class="add-cart-form"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="menu_id"
+                                value="<?= (int)$menu['menu_id'] ?>"
+                            >
+
+                            <?php if ($isPastry): ?>
+
+                                <input
+                                    type="hidden"
+                                    name="size"
+                                    value="regular"
+                                >
+
+                            <?php else: ?>
+
+                                <label for="size-<?= (int)$menu['menu_id'] ?>">
+                                    Size
+                                </label>
+
+                                <select
+                                    id="size-<?= (int)$menu['menu_id'] ?>"
+                                    name="size"
+                                    required
+                                >
+                                    <option value="small">Small</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="large">Large</option>
+                                </select>
+
+                            <?php endif; ?>
+
+                            <label for="qty-<?= (int)$menu['menu_id'] ?>">
+                                Quantity
+                            </label>
+
+                            <input
+                                id="qty-<?= (int)$menu['menu_id'] ?>"
+                                type="number"
+                                name="quantity"
+                                value="1"
+                                min="1"
+                                max="50"
+                                required
+                            >
+
+                            <button
+                                type="submit"
+                                class="add-cart-button"
+                            >
+                                Add to Cart +
+                            </button>
+
+                        </form>
 
                     </article>
 
@@ -351,11 +420,16 @@ if ($selectedId > 0 && !$selectedMoment) {
 
             <div class="empty-state">
                 <h3>Coming up with your next favorite.</h3>
+
                 <p>
                     Belum ada menu tersedia untuk momen ini.
                     Coba pilih momen lainnya.
                 </p>
-                <a href="#choose-moment" class="text-link">
+
+                <a
+                    href="#choose-moment"
+                    class="text-link"
+                >
                     Choose another moment →
                 </a>
             </div>
@@ -364,7 +438,9 @@ if ($selectedId > 0 && !$selectedMoment) {
 
             <div class="recommendation-placeholder">
                 <span>☕</span>
+
                 <h3>Your moment, your perfect sip.</h3>
+
                 <p>
                     Pilih salah satu momen di atas untuk melihat
                     menu rekomendasi khusus untukmu.
@@ -377,16 +453,20 @@ if ($selectedId > 0 && !$selectedMoment) {
 
 </main>
 
+<!-- FOOTER -->
 <footer class="footer">
     <div class="container footer-content">
+
         <div>
             <a href="../dashboard_main.php" class="logo">
                 LŪMA<span>.</span>
             </a>
+
             <p>Your everyday coffee, your everyday moment.</p>
         </div>
 
         <p>&copy; <?= date('Y') ?> LŪMA Café</p>
+
     </div>
 </footer>
 

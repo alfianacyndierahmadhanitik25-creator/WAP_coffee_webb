@@ -30,10 +30,14 @@ $total = 0;
     <title>Your Cart | LŪMA Café</title>
     <link rel="stylesheet" href="luma_moments.css">
 </head>
+
 <body>
 
 <main class="container section">
-    <a href="luma_moments.php" class="text-link">← Back to Moments</a>
+
+    <a href="menu.php" class="text-link">
+        ← Back to add some menu
+    </a>
 
     <div class="section-heading" style="margin-top: 24px">
         <div>
@@ -43,11 +47,12 @@ $total = 0;
         </div>
     </div>
 
-    <?php if (!$cart): ?>
+    <?php if (empty($cart)): ?>
 
         <div class="empty-state">
             <h3>Your cart is waiting.</h3>
             <p>Belum ada menu di keranjangmu.</p>
+
             <a href="luma_moments.php" class="text-link">
                 Discover your moment →
             </a>
@@ -56,46 +61,116 @@ $total = 0;
     <?php else: ?>
 
         <div class="orders-list">
+
             <?php foreach ($cart as $key => $item): ?>
+
                 <?php
-                $subtotal = (float)$item['price'] * (int)$item['quantity'];
+                $subtotal = (float) $item['price']
+                          * (int) $item['quantity'];
+
                 $total += $subtotal;
                 ?>
 
                 <article class="order-card">
+
                     <div class="order-top">
                         <div>
-                            <strong><?= e($item['menu_name']) ?></strong>
-                            <p>Size: <?= e(ucfirst($item['size'])) ?></p>
-                            <p>Quantity: <?= (int)$item['quantity'] ?></p>
+                            <strong>
+                                <?= e($item['menu_name']) ?>
+                            </strong>
+
+                            <p>
+                                Size: <?= e(ucfirst($item['size'])) ?>
+                            </p>
+
+                            <p>
+                                Quantity: <?= (int) $item['quantity'] ?>
+                            </p>
                         </div>
 
-                        <strong><?= e(rupiah($subtotal)) ?></strong>
+                        <strong>
+                            <?= e(rupiah($subtotal)) ?>
+                        </strong>
                     </div>
 
                     <p>
                         <?= e(rupiah($item['price'])) ?> per item
                     </p>
+
+                    <!-- Tombol Remove Item -->
+                    <form
+                        action="remove_from_cart.php"
+                        method="POST"
+                        onsubmit="return confirm('Hapus menu ini dari keranjang?');"
+                    >
+                        <input
+                            type="hidden"
+                            name="action"
+                            value="remove"
+                        >
+
+                        <input
+                            type="hidden"
+                            name="key"
+                            value="<?= e($key) ?>"
+                        >
+
+                        <button
+                            type="submit"
+                            class="remove-cart-button"
+                        >
+                            Remove item
+                        </button>
+                    </form>
+
                 </article>
+
             <?php endforeach; ?>
+
         </div>
 
+        <!-- Ringkasan Keranjang -->
         <div class="rewards-card" style="margin-top: 24px">
+
             <div>
                 <span class="reward-label">TOTAL</span>
+
                 <div class="points-number">
                     <?= e(rupiah($total)) ?>
                 </div>
             </div>
 
+            <!-- Tombol Clear Cart -->
+            <form
+                action="remove_from_cart.php"
+                method="POST"
+                onsubmit="return confirm('Yakin ingin mengosongkan seluruh keranjang?');"
+            >
+                <input
+                    type="hidden"
+                    name="action"
+                    value="clear"
+                >
+
+                <button
+                    type="submit"
+                    class="clear-cart-button"
+                >
+                    Clear Cart
+                </button>
+            </form>
+
+            <!-- Tombol Checkout -->
             <div class="reward-level">
                 <a href="checkout.php" class="btn-primary">
                     Continue to Checkout →
                 </a>
             </div>
+
         </div>
 
     <?php endif; ?>
+
 </main>
 
 </body>

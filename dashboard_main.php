@@ -1,15 +1,14 @@
-
 <?php
 session_start();
 
 require_once __DIR__ . '/config/database.php';
 
-// Escape output agar aman ditampilkan
+// Escape output so it can be displayed safely
 function e($value) {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
 
-// Format harga Rupiah
+// Format price in Rupiah
 function rupiah($value) {
     return 'Rp ' . number_format((float) $value, 0, ',', '.');
 }
@@ -19,7 +18,7 @@ $loggedIn = isset($_SESSION['user_id']);
 $userName = $_SESSION['name'] ?? '';
 $userRole = $_SESSION['role'] ?? '';
 
-// Tentukan tujuan tombol akun
+// Specify the destination for the account button
 if (!$loggedIn) {
     $accountUrl = 'login.php';
 } elseif ($userRole === 'staff') {
@@ -28,13 +27,13 @@ if (!$loggedIn) {
     $accountUrl = 'dashboard_main.php';
 }
 
-// Siapkan data menu dan Moments
+// Prepare menu and Moments data
 $menus = [];
 $moments = [];
 $dbError = false;
 
 try {
-    // Ambil menu yang tersedia
+    // Selected Menu
     $sqlMenus = "
         SELECT
             m.menu_id,
@@ -64,7 +63,7 @@ try {
         }
     }
 
-    // Ambil data LUMA Moments
+   // Retrieve LUMA Moments data
     $sqlMoments = "
         SELECT
             mo.moment_id,

@@ -1,13 +1,8 @@
 <?php
-
 session_start();
-
 require_once "config/database.php";
 
-
-/* =====================================================
-   HELPER: REDIRECT BERDASARKAN ROLE
-===================================================== */
+/* HELPER: REDIRECT ROLE */
 
 function redirectByRole(string $role): void
 {
@@ -21,7 +16,7 @@ function redirectByRole(string $role): void
         exit;
     }
 
-    // Role tidak dikenal: hapus session supaya tidak terjadi loop
+    // Unknown role: clear the session to prevent a loop
     session_unset();
     session_destroy();
     header("Location: login.php");

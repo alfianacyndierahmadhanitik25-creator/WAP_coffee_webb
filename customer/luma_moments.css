@@ -115,7 +115,7 @@ button {
     z-index: 1000;
     width: 100%;
     border-bottom: 1px solid var(--border);
-    background: rgba(248, 245, 240, 0.97);
+    background: rgba(255, 253, 249, 0.96);
     backdrop-filter: blur(12px);
 }
 
@@ -657,7 +657,7 @@ button {
 }
 
 .clear-cart-button:hover {
-    background: var(--danger);
+    background: var(--muted);
     color: var(--white);
 }
 

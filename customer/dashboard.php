@@ -217,7 +217,9 @@ try {
 
     <title>LŪMA Café | Customer Dashboard</title>
 
-    <link rel="stylesheet" href="dashboard.css">
+    
+<link rel="stylesheet" href="dashboard.css?v=3">
+
 </head>
 
 <body>

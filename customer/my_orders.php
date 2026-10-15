@@ -151,11 +151,11 @@ function statusClass($status): string
     </a>
 
     <nav class="nav-links">
-        <a href="../dashboard_main.php">Home</a>
+        <a href="dashboard.php">Home</a>
         <a href="menu.php">Menu</a>
         <a href="luma_moments.php">LŪMA Moments</a>
-        <a href="my_orders.php" class="active">My Orders</a>
         <a href="dashboard.php#rewards">Rewards</a>
+        <a href="my_orders.php" class="active">My Orders</a>
     </nav>
 
     <a href="cart.php" class="orders-cart">My Cart</a>

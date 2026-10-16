@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -10,16 +9,42 @@ if (
     exit;
 }
 
+// Koneksi database
+require_once __DIR__ . '/../config/database.php';
+
+// Ambil cart dari session
+$cart = $_SESSION['cart'] ?? [];
+
 function e($value): string {
-    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(
+        (string) ($value ?? ''),
+        ENT_QUOTES,
+        'UTF-8'
+    );
 }
 
 function rupiah($value): string {
-    return 'Rp ' . number_format((float)$value, 0, ',', '.');
+    return 'Rp ' . number_format(
+        (float) $value,
+        0,
+        ',',
+        '.'
+    );
 }
 
-$cart = $_SESSION['cart'] ?? [];
+// Hitung total harga
 $total = 0;
+
+foreach ($cart as $item) {
+    $quantity = max(1, (int) ($item['quantity'] ?? 1));
+
+    $total += (float) ($item['price'] ?? 0) * $quantity;
+}
+
+// Siapkan query foto menu dari database
+$imageStmt = $conn->prepare(
+    "SELECT image FROM menus WHERE menu_id = ?"
+);
 ?>
 
 <!DOCTYPE html>
@@ -27,151 +52,206 @@ $total = 0;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart | LŪMA Café</title>
-    <link rel="stylesheet" href="luma_moments.css">
+
+    <title>My Cart | LŪMA Café</title>
+
+    <link rel="stylesheet" href="cart.css">
 </head>
 
 <body>
 
-<main class="container section">
+<header class="navbar">
+    <div class="nav-content">
 
-    <a href="menu.php" class="text-link">
-        ← Back to add some menu
-    </a>
+        <a href="dashboard.php" class="logo">
+            LŪMA<span>.</span>
+        </a>
 
-    <div class="section-heading" style="margin-top: 24px">
-        <div>
-            <span class="eyebrow">YOUR SELECTION</span>
-            <h2>Your Cart</h2>
-            <p>Please check your orders before checkout.</p>
-        </div>
+        <nav class="nav-links">
+            <a href="dashboard.php">Home</a>
+            <a href="menu.php">Menu</a>
+            <a href="luma_moments.php">LŪMA Moments</a>
+            <a href="dashboard.php#rewards">Rewards</a>
+            <a href="my_orders.php">My Orders</a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="page-heading">
+        <p class="eyebrow">YOUR SELECTION</p>
+        <h1>My Cart</h1>
+        <p>Review your favorites before placing your order.</p>
     </div>
 
     <?php if (empty($cart)): ?>
 
-        <div class="empty-state">
-            <h3>Your cart is waiting.</h3>
-            <p>your cart is empty, please add some menu.</p>
+        <section class="empty-cart">
+            <h2>Your cart is empty</h2>
+            <p>Discover your next favorite drink at LŪMA.</p>
 
-            <a href="menu.php" class="text-link">
-                Let's start your journey →
+            <a href="menu.php" class="btn-primary">
+                Explore Menu
             </a>
-        </div>
+        </section>
 
     <?php else: ?>
 
-        <div class="orders-list">
+        <div class="cart-layout">
 
-            <?php foreach ($cart as $key => $item): ?>
+            <section class="cart-items">
 
-                <?php
-                $subtotal = (float) $item['price']
-                          * (int) $item['quantity'];
+                <?php foreach ($cart as $key => $item): ?>
 
-                $total += $subtotal;
-                ?>
+                    <?php
+                    $name = $item['menu_name'] ?? 'Menu item';
+                    $size = $item['size'] ?? '-';
 
-                <article class="order-card">
+                    $price = (float) ($item['price'] ?? 0);
 
-                    <div class="order-top">
-                        <div>
+                    $quantity = max(
+                        1,
+                        (int) ($item['quantity'] ?? 1)
+                    );
+
+                    // Ambil ID menu dari cart
+                    $menuId = (int) ($item['menu_id'] ?? 0);
+
+                    // Ambil nama foto dari tabel menus
+                    $image = '';
+
+                    if ($menuId > 0) {
+                        $imageStmt->bind_param('i', $menuId);
+                        $imageStmt->execute();
+
+                        $imageResult = $imageStmt->get_result();
+                        $imageData = $imageResult->fetch_assoc();
+
+                        if ($imageData) {
+                            $image = trim(
+                                (string) ($imageData['image'] ?? '')
+                            );
+                        }
+                    }
+
+                    // Folder gambar: WAP_coffee_webb/assets/menu/
+                    $imageName = basename($image);
+
+                    // Path dari customer/cart.php ke folder gambar
+                    $imagePath = '../assets/menu/' . $imageName;
+                    ?>
+
+                    <article class="cart-item">
+
+                        <?php if ($imageName !== ''): ?>
+
+                            <img
+                                src="<?= e($imagePath) ?>"
+                                alt="<?= e($name) ?>"
+                                class="product-image"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            >
+
+                            <div
+                                class="product-placeholder"
+                                style="display: none;"
+                            >
+                                LŪMA
+                            </div>
+
+                        <?php else: ?>
+
+                            <div class="product-placeholder">
+                                LŪMA
+                            </div>
+
+                        <?php endif; ?>
+
+                        <div class="item-info">
+
+                            <h3><?= e($name) ?></h3>
+
+                            <p>Size: <?= e($size) ?></p>
+
+                            <p>
+                                <?= rupiah($price) ?>
+                                × <?= $quantity ?>
+                            </p>
+
                             <strong>
-                                <?= e($item['menu_name']) ?>
+                                <?= rupiah($price * $quantity) ?>
                             </strong>
 
-                            <p>
-                                Size: <?= e(ucfirst($item['size'])) ?>
-                            </p>
-
-                            <p>
-                                Quantity: <?= (int) $item['quantity'] ?>
-                            </p>
                         </div>
 
-                        <strong>
-                            <?= e(rupiah($subtotal)) ?>
-                        </strong>
-                    </div>
-
-                    <p>
-                        <?= e(rupiah($item['price'])) ?> per item
-                    </p>
-
-                    <!-- Tombol Remove Item -->
-                    <form
-                        action="remove_from_cart.php"
-                        method="POST"
-                        onsubmit="return confirm('Hapus menu ini dari keranjang?');"
-                    >
-                        <input
-                            type="hidden"
-                            name="action"
-                            value="remove"
+                        <a
+                            class="remove-link"
+                            href="remove_from_cart.php?key=<?= urlencode((string) $key) ?>"
+                            onclick="return confirm('Remove this item from your cart?')"
                         >
+                            Remove
+                        </a>
 
-                        <input
-                            type="hidden"
-                            name="key"
-                            value="<?= e($key) ?>"
-                        >
+                    </article>
 
-                        <button
-                            type="submit"
-                            class="remove-cart-button"
-                        >
-                            Remove item
-                        </button>
-                    </form>
+                <?php endforeach; ?>
 
-                </article>
+            </section>
 
-            <?php endforeach; ?>
+            <aside class="order-summary">
 
-        </div>
+                <h2>Order Summary</h2>
 
-        <!-- Ringkasan Keranjang -->
-        <div class="rewards-card" style="margin-top: 24px">
+                <div class="summary-row">
+                    <span>Total items</span>
 
-            <div>
-                <span class="reward-label">TOTAL</span>
-
-                <div class="points-number">
-                    <?= e(rupiah($total)) ?>
+                    <span>
+                        <?= array_sum(array_map(
+                            fn($item) => max(
+                                1,
+                                (int) ($item['quantity'] ?? 1)
+                            ),
+                            $cart
+                        )) ?>
+                    </span>
                 </div>
-            </div>
 
-            <!-- Tombol Clear Cart -->
-            <form
-                action="remove_from_cart.php"
-                method="POST"
-                onsubmit="return confirm('Yakin ingin mengosongkan seluruh keranjang?');"
-            >
-                <input
-                    type="hidden"
-                    name="action"
-                    value="clear"
+                <div class="summary-row total-row">
+                    <span>Total</span>
+                    <strong><?= rupiah($total) ?></strong>
+                </div>
+
+                <a
+                    href="checkout.php"
+                    class="btn-primary checkout-button"
                 >
-
-                <button
-                    type="submit"
-                    class="clear-cart-button"
-                >
-                    Clear Cart
-                </button>
-            </form>
-
-            <!-- Tombol Checkout -->
-            <div class="reward-level">
-                <a href="checkout.php" class="btn-primary">
-                    Continue to Checkout →
+                    Proceed to Checkout
                 </a>
-            </div>
+
+                <a href="menu.php" class="continue-link">
+                    Continue Shopping
+                </a>
+
+            </aside>
 
         </div>
 
     <?php endif; ?>
 
 </main>
+
+<footer class="footer">
+    <p>
+        © <?= date('Y') ?> LŪMA Café.
+        Crafted for your everyday moments.
+    </p>
+</footer>
+
+<?php
+$imageStmt->close();
+?>
 
 </body>
 </html>

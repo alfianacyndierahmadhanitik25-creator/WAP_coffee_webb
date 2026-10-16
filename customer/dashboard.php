@@ -224,35 +224,30 @@ try {
 
 <body>
 
+
 <header class="navbar">
     <div class="container nav-content">
 
-        <a href="../dashboard_main.php" class="logo">
-            LŪMA<span>.</span>
-        </a>
+        <a href="dashboard.php" class="logo">LŪMA<span>.</span></a>
 
-        
-<nav class="nav-links">
-    <a href="dashboard.php">Home</a>
-    <a href="menu.php">Menu</a>
-    <a href="luma_moments.php">LŪMA Moments</a>
-    <a href="dashboard.php#rewards">Rewards</a>
-    <a href="my_orders.php">My orders</a>
-</nav>
-
+        <nav class="nav-links">
+            <a href="dashboard.php" class="active">Home</a>
+            <a href="menu.php">Menu</a>
+            <a href="luma_moments.php">LŪMA Moments</a>
+            <a href="dashboard.php#rewards">Rewards</a>
+            <a href="my_orders.php">My Orders</a>
+        </nav>
 
         <div class="nav-actions">
             <span class="hello-name">
                 Haloo, <?= e($name) ?>
             </span>
-
-            <a class="logout-link" href="../logout.php">
-                Logout
-            </a>
+            <a href="../logout.php" class="logout-link">Logout</a>
         </div>
 
     </div>
 </header>
+
 
 <main class="container page-content">
 

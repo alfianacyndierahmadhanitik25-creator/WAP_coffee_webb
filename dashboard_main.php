@@ -1,8 +1,6 @@
 <?php
 session_start();
-
 require_once __DIR__ . '/config/database.php';
-
 // Escape output so it can be displayed safely
 function e($value) {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -12,12 +10,10 @@ function e($value) {
 function rupiah($value) {
     return 'Rp ' . number_format((float) $value, 0, ',', '.');
 }
-
 // Login status
 $loggedIn = isset($_SESSION['user_id']);
 $userName = $_SESSION['name'] ?? '';
 $userRole = $_SESSION['role'] ?? '';
-
 // Specify the destination for the account button
 if (!$loggedIn) {
     $accountUrl = 'login.php';
@@ -56,7 +52,6 @@ try {
     ";
 
     $resultMenus = $conn->query($sqlMenus);
-
     if ($resultMenus) {
         while ($row = $resultMenus->fetch_assoc()) {
             $menus[] = $row;
@@ -123,7 +118,7 @@ try {
     <a href="dashboard_main.php" class="brand">LŪMA<span>.</span></a>
 
     <nav class="nav-links">
-        <a href="#discover">Discover</a>
+        <a href="#menu">Discover</a>
         <a href="#menu">Our Menu</a>
         <a href="#moments">LŪMA Moments</a>
         <a href="#rewards">Rewards</a>
@@ -222,7 +217,7 @@ try {
                                 <?= rupiah($menu['display_price']) ?>
                             </p>
 
-                            <a href="#moments" class="text-link">
+                            <a href="login.php" class="text-link">
                                 Explore more →
                             </a>
                         </div>

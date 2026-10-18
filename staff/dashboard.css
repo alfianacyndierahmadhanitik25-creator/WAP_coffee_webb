@@ -1,0 +1,198 @@
+/* DASHBOARD */
+.welcome {
+    margin-bottom: 24px;
+}
+.welcome h1 {
+    margin-bottom: 8px;
+    font-size: 27px;
+    font-weight: 700;
+}
+.welcome p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* RINGKASAN */
+.summary-grid {
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+.summary-sub {
+    display: block;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 11px;
+}
+.summary-sub.bad {
+    color: var(--red);
+    font-weight: 700;
+}
+a.summary-link {
+    color: inherit;
+    text-decoration: none;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+a.summary-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px #4a2a1a14;
+}
+
+/* RECENT ORDERS */
+.section-heading-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+a.ingredient-btn {
+    text-decoration: none;
+}
+.see-all {
+    color: var(--brown);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.see-all:hover {
+    color: var(--brown-dark);
+    text-decoration: underline;
+}
+
+/* KOLOM KANAN */
+.side-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.side-card {
+    padding: 22px;
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: 0 8px 24px #4a2a1a12;
+}
+.side-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.side-head h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+}
+.side-head a {
+    color: var(--brown);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+.side-head a:hover {
+    text-decoration: underline;
+}
+.side-empty {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+.pop-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    color: inherit;
+    text-decoration: none;
+}
+.pop-item:last-child {
+    border-bottom: none;
+}
+.pop-thumb {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f5eee7;
+    color: #d9c6b6;
+    font-size: 18px;
+}
+.pop-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.pop-info {
+    flex: 1;
+    min-width: 0;
+}
+.pop-info strong {
+    display: block;
+    overflow: hidden;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.pop-info small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.pop-sold {
+    color: var(--brown);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.stock-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.stock-row:last-of-type {
+    border-bottom: none;
+}
+
+.stock-row .stock-info {
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* ==============================
+   MODAL
+================================ */
+
+.dash-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.dash-modal-body .order-items {
+    flex: none;
+    overflow: visible;
+}
+
+
+@media (max-width: 650px) {
+
+    .welcome h1 {
+        font-size: 22px;
+    }
+
+    .section-heading-row {
+        flex-direction: column;
+    }
+
+}

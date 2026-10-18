@@ -222,7 +222,7 @@ try {
                                 <?= rupiah($menu['display_price']) ?>
                             </p>
 
-                            <a href="#moments" class="text-link">
+                            <a href="login.php" class="text-link">
                                 Explore more →
                             </a>
                         </div>

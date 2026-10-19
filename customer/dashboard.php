@@ -526,8 +526,8 @@ try {
             <div class="empty-state compact-empty">
                 <p>LŪMA Moments will be available soon.</p>
 
-                <a href="luma_moments.php" class="text-link">
-                    Visit LŪMA Moments →
+                <a href="menu.php" class="text-link">
+                    Visit our another menu →
                 </a>
             </div>
 

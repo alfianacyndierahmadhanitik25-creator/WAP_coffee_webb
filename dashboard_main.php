@@ -253,7 +253,9 @@ try {
 
                         <?php if (!empty($moment['menu_name'])): ?>
                             <p>Perfect with</p>
-                            <strong><?= e($moment['menu_name']) ?></strong>
+                            <a href="login.php" class="text-link">
+                               <strong><?= e($moment['menu_name']) ?></strong> 
+                            </a>
                         <?php else: ?>
                             <p>Find a companion for your moment.</p>
                         <?php endif; ?>

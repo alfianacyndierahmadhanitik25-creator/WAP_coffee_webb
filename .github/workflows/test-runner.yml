@@ -1,0 +1,23 @@
+
+name: Test Self Hosted Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-runner:
+    runs-on: self-hosted
+
+    steps:
+      - name: Test Connection
+        run: echo "HALO! GitHub Actions berhasil terhubung!"
+
+      - name: Check Runner
+        run: |
+          echo "Runner name:"
+          hostname
+          echo "Operating system:"
+          uname -a
+
+      - name: Success
+        run: echo "SELF-HOSTED RUNNER BERHASIL!"

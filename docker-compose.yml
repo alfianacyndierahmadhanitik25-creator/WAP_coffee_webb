@@ -1,0 +1,52 @@
+
+services:
+  php-luma:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-luma
+    environment:
+      DB_HOST: mysql-luma
+      DB_USER: root
+      DB_PASSWORD: luma_docker_root
+      DB_NAME: luma
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql-luma
+    networks:
+      - luma-network
+
+  nginx-luma:
+    image: nginx:latest
+    container_name: nginx-luma
+    ports:
+      - "8083:80"
+    volumes:
+      - .:/var/www/html
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php-luma
+    networks:
+      - luma-network
+
+  mysql-luma:
+    image: mysql:8.0
+    container_name: mysql-luma
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: luma_docker_root
+      MYSQL_DATABASE: luma
+    volumes:
+      - luma-db-data:/var/lib/mysql
+      - /mnt/c/laragon/backup/luma.sql:/docker-entrypoint-initdb.d/01-luma.sql:ro
+    networks:
+      - luma-network
+
+volumes:
+  luma-db-data:
+
+networks:
+  luma-network:
+    driver: bridge
+

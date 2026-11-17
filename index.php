@@ -112,7 +112,7 @@ if (isset($_GET['q'])) {
                 <p><?= htmlspecialchars($_SERVER['SERVER_SOFTWARE'], ENT_QUOTES, 'UTF-8'); ?></p>
                 <p>
                     PHP version: <?= htmlspecialchars(PHP_VERSION, ENT_QUOTES, 'UTF-8'); ?>
-                    <a title="phpinfo()" href="/?q=info">info</a>
+                    <a title="phpinfo()" href="/?q=info">info </a>
                 </p>
                 <p>
                     Document Root:

@@ -244,7 +244,7 @@ try {
 
         <?php if (empty($moments)): ?>
             <p class="empty-message">
-                Rekomendasi Moments belum tersedia.
+                Recomendation are not available
             </p>
         <?php else: ?>
             <div class="moments-grid">

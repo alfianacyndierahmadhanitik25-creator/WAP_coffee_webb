@@ -149,7 +149,7 @@ try {
             </p>
 
             <a href="#menu" class="primary-button">
-                Discover Our Menu
+                Jelajahi Menu Kami
             </a>
         </div>
 

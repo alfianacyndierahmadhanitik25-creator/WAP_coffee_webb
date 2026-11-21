@@ -154,7 +154,7 @@ try {
             </p>
 
             <a href="#menu" class="primary-button">
-                Discover Our Menu
+                Discover Our Menu List
             </a>
         </div>
 

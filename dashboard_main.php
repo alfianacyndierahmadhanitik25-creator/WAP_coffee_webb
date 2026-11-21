@@ -149,8 +149,8 @@ try {
             </h1>
 
             <p class="hero-description">
-                Temukan secangkir kopi yang menemani ceritamu.
-                Nikmati setiap momen bersama LŪMA.
+                Find a cup of coffee that accompanies your stories. 
+                Enjoy every moment with LŪMA.
             </p>
 
             <a href="#menu" class="primary-button">
